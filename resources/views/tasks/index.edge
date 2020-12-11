@@ -1,0 +1,40 @@
+@layout('master')
+
+@section('view')
+  <div class="box">
+    <h1 class="title">Lista de Tareas</h1>
+    <table class="table is-bordered is-striped is-narrow is-fullwidth">
+      <thead>
+        <tr>
+          <th style="width: 80px;">#</th>
+          <th>Título</th>
+          <th style="width: 120px;">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        @each(task in tasks)
+          <tr>
+            <td>
+              {{ ($loop.index + 1) }}
+            </td>
+            <td>
+              {{ task.title }}
+            </td>
+            <td>
+              <button class="button is-danger is-outlined">
+                <span class="icon is-small">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+                </span>
+                <span>Eliminar</span>
+              </button>
+            </td>
+          </tr>
+        @else
+          <tr>
+            <td colspan="3" class="has-text-centered">¡Ninguna tarea creada todavía!</td>
+          </tr>
+        @endeach
+      </tbody>
+    </table>
+  </div>
+@endsection
