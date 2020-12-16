@@ -3,11 +3,26 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>ToDo App</title>	
+	<title>ToDo App</title>
+	<style>
+		.poppin{
+			animation-name: pop;
+			animation-duration: 0.3s;
+		}
+		@keyframes pop{
+			0%{
+				opacity: 0%;
+			}
+			100%{
+				opacity: 100%;
+			}
+		}
+	</style>
+
 	{{ style('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css') }}
 	{{ style('https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css')}}
 </head>
-<body style="background-color: #03B898; font-family: Arial, Helvetica, sans-serif">
+<body style="background-color: #00C68E; font-family: Arial, Helvetica, sans-serif">
 	<section class="section">
 		<div class="container">
 			<div class="columns">
