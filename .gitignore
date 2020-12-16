@@ -1,16 +1,36 @@
 # Node modules
 node_modules
 package-lock.json
-
+yarn.lock
+yarn.lock.json
+yarn-error.log
+ecosystem.config.js
 # Adonis directory for storing tmp files
 tmp
 
 # Environment variables, never commit this file
 .env
+.env.testing
+hot
+.nuxt
+.nuxt/
+.nuxt/*
 
 # The development sqlite file
-database/*.sqlite
+database/development.sqlite
 
-# VSCode & Webstorm history directories
-.history
+# Jetbrains folder
 .idea
+.vscode
+.editorconfig
+
+public/organization/assets
+public/users/assets
+public/projects/assets
+public/advancedMemberFiles
+
+
+public/exports/*
+
+dump.rdb
+.env.testing
