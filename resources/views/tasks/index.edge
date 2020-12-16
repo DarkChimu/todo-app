@@ -1,18 +1,45 @@
 @layout('master')
 
 @section('view')
+
   <div class="box">
     <h1 class="title">Lista de Tareas</h1>
-    <table class="table is-bordered is-striped is-narrow is-fullwidth">
-      <thead>
-        <tr>
-          <th style="width: 80px;">#</th>
-          <th>Título</th>
-          <th style="width: 120px;">Acción</th>
-        </tr>
-      </thead>
-      <tbody>
-        @each(task in tasks)
+      <form action="/tasks" method="POST">
+        {{ csrfField() }}
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input class="input" type="text" name="title" value="{{ old('title', '') }}" placeholder="Nueva Tarea">
+          </div>
+          <div class="control">
+            <button type="submit" class="button is-info">
+              <span class="icon is-small">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </span>
+              <span>Agregar</span>
+            </button>
+          </div>
+        </div>
+        {{ elIf('<p class="help is-danger">$self</p>', getErrorFor('title'), hasErrorFor('title')) }}
+      </form>
+      
+      @if(old('notification'))
+      <br>
+      <div class="notification is-success">
+        {{ old('notification') }}
+      </div>
+      @endif
+      
+      <br>
+      <table class="table is-bordered is-striped is-narrow is-fullwidth">
+        <thead>
+          <tr>
+            <th style="width: 80px;">#</th>
+            <th>Título</th>
+            <th style="width: 120px;">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @each(task in tasks)
           <tr>
             <td>
               {{ ($loop.index + 1) }}
@@ -21,20 +48,23 @@
               {{ task.title }}
             </td>
             <td>
-              <button class="button is-danger is-outlined">
-                <span class="icon is-small">
-                  <i class="fa fa-times" aria-hidden="true"></i>
-                </span>
-                <span>Eliminar</span>
-              </button>
+              <form action="{{ 'tasks/' + task.id + '?_method=DELETE' }}" method="POST">
+                {{ csrfField() }}
+                <button type="submit" class="button is-danger is-outlined">
+                  <span class="icon is-small">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                  </span>
+                  <span>Eliminar</span>
+                </button>
+              </form>
             </td>
           </tr>
-        @else
+          @else
           <tr>
             <td colspan="3" class="has-text-centered">¡Ninguna tarea creada todavía!</td>
           </tr>
-        @endeach
-      </tbody>
-    </table>
-  </div>
+          @endeach
+        </tbody>
+      </table>
+    </div>
 @endsection
