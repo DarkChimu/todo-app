@@ -1,0 +1,37 @@
+{
+    "root": true,
+    "env": {
+      "node": true,
+      "browser": true
+    },
+    "extends": ["airbnb-base"],
+    "rules": {
+      "camelcase": "off",
+      "no-trailing-spaces": "off",
+      "strict": "off",
+      "no-tabs": "off",
+      "no-mixed-spaces-and-tabs": "off",
+      "indent": "off",
+      "semi": ["error", "never"],
+      "comma-dangle": ["error", "never"],
+      "space-before-function-paren": "off",
+      "class-methods-use-this": "off",
+      "object-curly-newline": ["error", { "multiline": true }],
+      "global-require": "off",
+      "arrow-parens": ["error", "as-needed"],
+      "no-param-reassign": ["error", { "props": false }],
+      // "vue/component-name-in-template-casing": ["error", "PascalCase"],
+      "linebreak-style" : "off"
+    },
+    "globals": {
+      "use": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2017,
+      "ecmaFeatures": {
+        "experimentalObjectRestSpread": true
+      },
+      "parser": "babel-eslint"
+    }
+  }
+  

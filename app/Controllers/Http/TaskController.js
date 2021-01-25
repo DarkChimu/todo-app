@@ -7,35 +7,40 @@ const Task = use('App/Models/Task')
 const { validate } = use('Validator')
 
 class TaskController {
-	async index({ view }) {
-		//Consultamos todas las tareas que tenga el usuario
-		const tasks = await Task.all()
+	async index({ auth, view }) {
+		const user = await auth.getUser()
+		// Consultamos todas las tareas que tenga el usuario
+		const tasks = await user.tasks().fetch()
 		return view.render('tasks.index', { tasks: tasks.toJSON() })
 	}
 
-	async store({ request, response, session }) {
+	async store({ auth, request, response, session }) {
+		// Consultamos al usuario autentificado
+		const user = await auth.getUser()
 		
-		//validamos la informacion de entrada
+		// Validamos la informacion de entrada
 		const validation = await validate(request.all())
 		
-		//reglas de validacion fueron movidas a app/Validators/StoreTask
+		// Reglas de validacion fueron movidas a app/Validators/StoreTask
 
-		//Guardamos en base de datos
+		// Guardamos en base de datos
 		const task = new Task()
 		task.title = request.input('title')
-		await task.save()
+		await user.tasks().save(task)
 
-		//Guardamos mensaje de exito
+		// Guardamos mensaje de exito
 		session.flash({ notification: '¡Tarea agregada con exito!'})
 
 		return response.redirect('back')
 	}
 
-	async destroy({ params, session, response }){
+	async destroy({ auth, params, session, response }) {
+		const user = await auth.getUser()
+
 		const task = await Task.find(params.id)
 		await task.delete()
 
-		//Guardamos el mensaje de exito
+		// Guardamos el mensaje de exito
 		session.flash({ notification: '¡Tarea eliminada con éxito!' })
 		response.redirect('back')
 	}
