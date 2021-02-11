@@ -2,7 +2,7 @@
 
 @section('view')
 <div class="box">
-    <form action="users/login" method="POST">
+    <form action="api/login" method="POST">
         {{ csrfField() }}
         <div class="field">
             <label class="label">Login</label>
@@ -27,7 +27,7 @@
         <div class="field">
             <p class="control">
                 <button class="button is-success">
-                    Login
+                    Continue
                 </button>
             </p>
         </div>

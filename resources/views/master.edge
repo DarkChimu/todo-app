@@ -5,6 +5,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>ToDo App</title>
 	<style>
+		* {
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
 		.poppin{
 			animation-name: pop;
 			animation-duration: 0.3s;
@@ -22,7 +26,8 @@
 	{{ style('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css') }}
 	{{ style('https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css')}}
 </head>
-<body style="background-color: #00C68E; font-family: Arial, Helvetica, sans-serif">
+<body style="background-color: #00C68E; font-family: Arial, Helvetica, sans-serif; min-height: 100vh; height: 100vh">
+	@include('components.navbar')
 	<section class="section">
 		<div class="container">
 			<div class="columns">
