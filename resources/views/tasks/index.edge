@@ -4,7 +4,7 @@
 
   <div class="box">
     <h1 class="title">Lista de Tareas</h1>
-      <form action="/tasks" method="POST">
+      <form action="tasks" method="POST">
         {{ csrfField() }}
         <div class="field has-addons">
           <div class="control is-expanded">
@@ -24,7 +24,7 @@
       
       @if(old('notification'))
       <br>
-      <div class="notification is-success">
+      <div class="notification is-success poppin">
         {{ old('notification') }}
       </div>
       @endif

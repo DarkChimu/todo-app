@@ -15,8 +15,20 @@
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
-/*Route.on('/').render('welcome')*/
 
-Route.get('/', 'TaskController.index') // -> Ruta de Indexado de tareas
-Route.post('tasks', 'TaskController.store').validator('StoreTask') // -> Ruta para guardar Tareas
-Route.delete('tasks/:id', 'TaskController.destroy') // -> Ruta para Borrar tareas
+Route.on('/').render('home.index')
+Route.on('/login').render('auth.index')
+Route.on('/signup').render('auth.signup')
+
+Route.group(() => {
+    Route.post('register', 'UserController.store').validator('StoreUser') // -> Ruta para guardar Usuarios
+    Route.post('login', 'UserController.login').validator('Login')
+    Route.get('confirm/:token', 'UserController.confirmAccount')
+}).prefix('/api')
+
+Route.group(() => {
+    Route.get('/', 'TaskController.index') // -> Ruta de Indexado de tareas
+    Route.post('tasks', 'TaskController.store').validator('StoreTask') // -> Ruta para guardar Tareas
+    Route.delete('tasks/:id', 'TaskController.destroy') // -> Ruta para Borrar tareas
+}).prefix('/user').middleware('auth')
+

@@ -1,0 +1,7 @@
+@if(flashMessage('notification'))
+
+<div class="notification is-{{ flashMessage('notification.type') }} poppin">
+    {{ flashMessage('notification.message') }}
+</div>
+  
+@endif
