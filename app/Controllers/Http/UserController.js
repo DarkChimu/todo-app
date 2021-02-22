@@ -5,13 +5,56 @@ const { validate } = use('Validator')
 const { flashAndRedirect } = use('App/Helpers')
 const Mail = use('Mail')
 const Env = use('Env')
+const Hash = use('Hash')
 const jwt = require('jsonwebtoken')
 
 class UserController {
-    async login ({ request, auth }) {
+    async login ({ request, session, auth, response }) {
         const { email, password } = request.all()
-        const token = auth.attempt(email, password)
-        return token
+        const validation = await validate({ email, password })
+
+        const userExist = await User.findBy('email', email)
+
+        if (!userExist) {
+            return flashAndRedirect(
+                'danger',
+                'no user account found with this email',
+                'back', {
+                session,
+                response
+            })
+        }
+
+        if (!userExist.email_verified) {
+            return flashAndRedirect(
+                'danger',
+                'please verify your email first',
+                'back', {
+                session,
+                response
+            })
+        }
+
+        const isSame = await Hash.verify(password, userExist.password)
+        if (!isSame) {
+            return flashAndRedirect(
+                'danger',
+                'incorrect credentials',
+                'back', {
+                session,
+                response
+            })
+        }
+
+        await auth.login(userExist)
+
+        return response.redirect('/user')
+    }
+
+    async logout ({ auth, response }) {
+        await auth.logout()
+
+        return response.redirect('/')
     }
 
     async store({ session, request, response }) {
@@ -118,6 +161,69 @@ class UserController {
             }
         )
     }
+
+    async resendConfirmationEmail({ request, response, session }) {
+        const validation = await validate(request.all(), {
+          email: 'required|email',
+        });
+    
+        if (validation.fails()) {
+          session.withErrors(validation.messages()).flashAll();
+          return response.redirect('back');
+        }
+    
+        const user = await User.findBy('email', request.input('email'));
+        if (!user) {
+          return flashAndRedirect(
+            'success',
+            'if the email is valid, you should receive an email!',
+            '/login',
+            {
+              session,
+              response,
+            }
+          );
+        }
+    
+        if (user.email_verified) {
+          return flashAndRedirect(
+            'danger',
+            'account already verified!',
+            '/login',
+            {
+              session,
+              response,
+            }
+          );
+        }
+    
+        const token = jwt.sign({ email: user.email }, Env.get('SECRET'), {
+          expiresIn: 60 * 60 * 24 * 3,
+        });
+    
+        const params = {
+          ...user.toJSON(),
+          token,
+          appUrl: Env.get('APP_URL'),
+        };
+    
+        await Mail.send('emails.confirm_account', params, (message) => {
+          message
+            .to(user.email)
+            .from(Env.get('FROM_EMAIL'))
+            .subject('Confirm your Account!')
+        });
+    
+        return flashAndRedirect(
+          'success',
+          'if the email is valid, you should receive an email!',
+          '/login',
+          {
+            session,
+            response,
+          }
+        );
+      }
 }
 
 module.exports = UserController
