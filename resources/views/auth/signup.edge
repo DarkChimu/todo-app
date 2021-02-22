@@ -1,1 +1,54 @@
-@!section('view')
+@layout('master')
+
+@section('view')
+<div class="box">
+    @include('components.notification')
+    <form action="api/register  " method="POST">
+        {{ csrfField() }}
+        <div class="field">
+            <label class="label">Signup</label>
+            <p class="control has-icons-left has-icons-right">
+                <input class="input" type="email" name="email" placeholder="Email" value="{{ old('email', '') }}">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                </span>
+            </p>
+            {{ elIf('<p class="help is-danger">$self</p>', getErrorFor('email'), hasErrorFor('email')) }}
+        </div>
+        <div class="field">
+            <p class="control has-icons-left">
+                <input class="input" name="first_name" type="text" placeholder="First Name" value="{{ old('first_name', '') }}">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-user"></i>
+                </span>
+            </p>
+            {{ elIf('<p class="help is-danger">$self</p>', getErrorFor('first_name'), hasErrorFor('first_name')) }}
+        </div>
+        <div class="field">
+            <p class="control has-icons-left">
+                <input class="input" name="last_name" type="text" placeholder="Last Name" value="{{ old('last_name', '') }}">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-user"></i>
+                </span>
+            </p>
+            {{ elIf('<p class="help is-danger">$self</p>', getErrorFor('last_name'), hasErrorFor('last_name')) }}
+        </div>
+        <div class="field">
+            <p class="control has-icons-left">
+                <input class="input" name="password" type="password" placeholder="Password">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </p>
+            {{ elIf('<p class="help is-danger">$self</p>', getErrorFor('password'), hasErrorFor('password')) }}
+        </div>
+        <div class="field">
+            <p class="control">
+                <button class="button is-success">
+                    Create Account
+                </button>
+            </p>
+        </div>
+    </form>
+</div>
+@endsection

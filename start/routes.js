@@ -21,8 +21,9 @@ Route.on('/login').render('auth.index')
 Route.on('/signup').render('auth.signup')
 
 Route.group(() => {
-    Route.post('register', 'UserController.store')
-    Route.post('login', 'UserController.store')
+    Route.post('register', 'UserController.store').validator('StoreUser') // -> Ruta para guardar Usuarios
+    Route.post('login', 'UserController.login').validator('Login')
+    Route.get('confirm/:token', 'UserController.confirmAccount')
 }).prefix('/api')
 
 Route.group(() => {

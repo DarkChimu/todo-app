@@ -7,7 +7,7 @@ class StoreTask {
     }
   }
 
-  get messages(){
+  get messages () {
     return {
       'title.required': 'Debe ingresar algún título',
       'title.min': 'El titulo debe ser mayor a 3 carácteres'

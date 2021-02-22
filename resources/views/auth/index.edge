@@ -2,12 +2,13 @@
 
 @section('view')
 <div class="box">
+    @include('components.notification')
     <form action="api/login" method="POST">
         {{ csrfField() }}
         <div class="field">
             <label class="label">Login</label>
             <p class="control has-icons-left has-icons-right">
-                <input class="input" type="email" placeholder="Email">
+                <input class="input" type="email" name="email" placeholder="Email" value="{{ old('email', '') }}">
                 <span class="icon is-small is-left">
                     <i class="fas fa-envelope"></i>
                 </span>
@@ -15,19 +16,31 @@
                     <i class="fas fa-check"></i>
                 </span>
             </p>
+            {{ elIf('<p class="help is-danger">$self</p>', getErrorFor('email'), hasErrorFor('email')) }}
         </div>
         <div class="field">
             <p class="control has-icons-left">
-                <input class="input" type="password" placeholder="Password">
+                <input class="input" name="password" type="password" placeholder="Password">
                 <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
                 </span>
             </p>
+            {{ elIf('<p class="help is-danger">$self</p>', getErrorFor('password'), hasErrorFor('password')) }}
         </div>
-        <div class="field">
+        <div class="field is-grouped">
             <p class="control">
                 <button class="button is-success">
                     Continue
+                </button>
+            </p>
+            <p class="control">
+                <button class="button">
+                    <a href="/forgot/password">Forgot Password?</a>
+                </button>
+            </p>
+            <p class="control">
+                <button class="button">
+                    <a href="/confirm/resend">Havent received confirmation Email?</a>
                 </button>
             </p>
         </div>
