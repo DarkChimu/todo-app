@@ -1,0 +1,27 @@
+@layout('master')
+
+@section('view')
+<div class="box">
+    <h1 class="title" align="center">Resend Confirmation</h1>
+    @include('components.notification')
+    <form action="api/confirm/resend" method="POST">
+        {{ csrfField() }}
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+                <input class="input" type="email" name="email" placeholder="Email" value="{{ old('email', '') }}">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                </span>
+            </p>
+            {{ elIf('<p class="help is-danger">$self</p>', getErrorFor('email'), hasErrorFor('email')) }}
+        </div>
+        <div class="field">
+            <p class="control">
+                <button class="button is-success">
+                    Send Verification
+                </button>
+            </p>
+        </div>
+    </form>
+</div>
+@endsection

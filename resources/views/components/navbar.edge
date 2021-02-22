@@ -11,12 +11,21 @@
       </a>
     </div>
     @loggedIn
-    <form action="/api/logout" method="post">
-        {{ csrfField() }}
-        <button class="button is-success" type="submit">
-            <strong>Logout!</strong>
-        </button>
-    </form>
+    <div id="navMenu" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <h1>Welcome {{ auth.user.first_name }}</h1>
+        </div>
+        <div class="navbar-item">
+          <form action="/api/logout" method="post">
+            {{ csrfField() }}
+            <button class="button is-success" type="submit">
+                <strong>Logout!</strong>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
     @else
     <div id="navMenu" class="navbar-menu">
         <div class="navbar-end">

@@ -19,11 +19,14 @@ const Route = use('Route')
 Route.on('/').render('home.index')
 Route.on('/login').render('auth.index')
 Route.on('/signup').render('auth.signup')
+Route.on('/resend_confirm').render('auth.resend_confirm')
 
 Route.group(() => {
     Route.post('register', 'UserController.store').validator('StoreUser') // -> Ruta para guardar Usuarios
     Route.post('login', 'UserController.login').validator('Login')
+    Route.post('logout', 'UserController.logout')
     Route.get('confirm/:token', 'UserController.confirmAccount')
+    Route.post('confirm/resend', 'UserController.resendConfirmationEmail')
 }).prefix('/api')
 
 Route.group(() => {
