@@ -8,6 +8,8 @@ const Env = use('Env')
 const Hash = use('Hash')
 const jwt = require('jsonwebtoken')
 
+const APP_URL = `http://${process.env.HOST}:${process.env.PORT}`
+
 class UserController {
     async login ({ request, session, auth, response }) {
         const { email, password } = request.all()
@@ -83,20 +85,20 @@ class UserController {
             email_verified: false
         })
 
-        const token = jwt.sign({ email: user.email }, Env.get('SECRET'), {
+        const token = jwt.sign({ email: user.email }, process.env.SECRET, {
             expiresIn: 60 * 60 * 24 * 3
         })
 
         const params = {
             ...user.toJSON(),
             token,
-            appUrl: Env.get('APP_URL')
+            appUrl: APP_URL
         }
 
         await Mail.send('emails.confirm_account', params, (message) => {
             message
             .to(user.email)
-            .from(Env.get('FROM_EMAIL'))
+            .from(process.env.FROM_EMAIL)
             .subject('Confirm your Account!')
         })
         return flashAndRedirect(
@@ -117,7 +119,7 @@ class UserController {
 
         // Verificamos el token si es correcto o sigue vigente
         try {
-            payload = await jwt.verify(token, Env.get('SECRET'))
+            payload = await jwt.verify(token, process.env.SECRET)
         } catch (err) {
             return flashAndRedirect(
                 'danger',
@@ -197,20 +199,20 @@ class UserController {
           );
         }
     
-        const token = jwt.sign({ email: user.email }, Env.get('SECRET'), {
+        const token = jwt.sign({ email: user.email }, process.env.SECRET, {
           expiresIn: 60 * 60 * 24 * 3,
         });
     
         const params = {
           ...user.toJSON(),
           token,
-          appUrl: Env.get('APP_URL'),
+          appUrl: APP_URL
         };
     
         await Mail.send('emails.confirm_account', params, (message) => {
           message
             .to(user.email)
-            .from(Env.get('FROM_EMAIL'))
+            .from(process.env.FROM_EMAIL)
             .subject('Confirm your Account!')
         });
     
