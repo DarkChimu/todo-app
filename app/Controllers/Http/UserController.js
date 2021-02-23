@@ -9,6 +9,7 @@ const Hash = use('Hash')
 const jwt = require('jsonwebtoken')
 
 const APP_URL = `http://${process.env.HOST}:${process.env.PORT}`
+const SECRET = `${process.env.SECRET}`
 
 class UserController {
     async login ({ request, session, auth, response }) {
@@ -85,7 +86,7 @@ class UserController {
             email_verified: false
         })
 
-        const token = jwt.sign({ email: user.email }, process.env.SECRET, {
+        const token = jwt.sign({ email: user.email }, SECRET, {
             expiresIn: 60 * 60 * 24 * 3
         })
 
@@ -119,7 +120,7 @@ class UserController {
 
         // Verificamos el token si es correcto o sigue vigente
         try {
-            payload = await jwt.verify(token, process.env.SECRET)
+            payload = await jwt.verify(token, SECRET)
         } catch (err) {
             return flashAndRedirect(
                 'danger',
@@ -199,7 +200,7 @@ class UserController {
           );
         }
     
-        const token = jwt.sign({ email: user.email }, process.env.SECRET, {
+        const token = jwt.sign({ email: user.email }, SECRET, {
           expiresIn: 60 * 60 * 24 * 3,
         });
     
