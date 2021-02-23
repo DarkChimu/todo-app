@@ -14,7 +14,9 @@
     <div id="navMenu" class="navbar-menu">
       <div class="navbar-end">
         <div class="navbar-item">
-          <h1>Welcome {{ auth.user.first_name }}</h1>
+          <button class="button is-primary is-inverted">
+           <a href="/user">Welcome {{ auth.user.first_name }}</a>
+        </button>
         </div>
         <div class="navbar-item">
           <form action="/api/logout" method="post">
